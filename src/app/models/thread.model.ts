@@ -1,3 +1,6 @@
+/**
+ * App imports
+ */
 import { Message } from './message.model';
 
 /**

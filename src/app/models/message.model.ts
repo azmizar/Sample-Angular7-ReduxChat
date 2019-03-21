@@ -1,3 +1,6 @@
+/**
+ * App imports
+ */
 import { User } from './user.model';
 import { Thread } from './thread.model';
 
