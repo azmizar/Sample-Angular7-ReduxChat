@@ -1,12 +1,11 @@
 /**
  * Angular import
  */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 
 /**
  * App imports
  */
-import { User } from '../models/user.model';
 import { Message } from '../models/message.model';
 
 @Component({
@@ -20,10 +19,13 @@ export class ChatMessageComponent implements OnInit {
   /**
    * Constructor
    */
-  constructor() { }
+  constructor(private _el: ElementRef) { }
 
   /**
    * Handles OnInit()
    */
-  ngOnInit() { }
+  ngOnInit() { 
+    // scroll this item into view so that it appears at the bottom of the viewport
+    setTimeout(() => { this._el.nativeElement.scrollIntoView(true); });
+  }
 }
