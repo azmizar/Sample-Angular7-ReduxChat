@@ -1,10 +1,30 @@
 <div class="card">
   <div class="card-header">
-    <h3>Threads</h3>
+    <div class="row no-gutters">
+      <div class="col">
+        <h3>Threads</h3>
+      </div>
+      <div class="col-3 pt-2">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="customCheck1" (click)="onActivateRandomMessage(randMsgInput.checked)" #randMsgInput>
+          <label class="custom-control-label" for="customCheck1">Random Message</label>
+        </div>
+      </div>
+    </div>
   </div>
   <ul class="list-group list-group-flush">
     <li *ngFor="let thread of threads" class="list-group-item">
       <chat-thread [thread]="thread" [selectedThread]="selectedThread" (selectThread)="onSelectThread($event)"></chat-thread>
     </li>
   </ul>
+  <div class="card-footer">
+    <h5>Credits:</h5>
+    <ul class="small list-group list-group-flush">
+      <li class="list-group-item">Tutorial from ng-book (https://www.ng-book.com/2/) from Redux chapter</li>
+      <li class="list-group-item">Robot images from https://www.freeiconspng.com</li>
+      <li class="list-group-item">Random quotes from https://ron-swanson-quotes.herokuapp.com/v2/quotes</li>
+      <li class="list-group-item">Random quotes from https://corporatebs-generator.sameerkumar.website/</li>
+      <li class="list-group-item">Random quotes from https://geek-jokes.sameerkumar.website/api</li>
+    </ul>
+  </div>
 </div>  

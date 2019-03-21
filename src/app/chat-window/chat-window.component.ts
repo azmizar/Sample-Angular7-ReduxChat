@@ -59,12 +59,14 @@ export class ChatWindowComponent implements OnInit {
    * Sends message to chat thread
    * @param msg Message to send
    */
-  sendMessage(msg: string): void {
+  sendMessage(msg: string): boolean {
     this._store.dispatch(ThreadsActions.addMessage(this.thread, {
       author: this.currentUser,
-      sentAt: moment(),
+      sentAt: moment().toDate(),
       isClient: true,
       text: msg
     }));
+
+    return false;
   }
 }

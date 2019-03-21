@@ -20,6 +20,7 @@ import { AppState } from './appstate/app.reducer';
 import * as UserActions from './appstate/user.actions';
 import * as ThreadsActions from './appstate/thread.actions';
 import { generateUUID } from './util/uuid.util';
+import { getAllMessages } from './appstate/threads.reducer';
 
 @Component({
   selector: 'app-root',
@@ -42,24 +43,28 @@ export class AppComponent {
     const botCapUser: User = {
       id: generateUUID(),
       name: 'Ms. Capitalize',
+      isClient: false,
       avatarSrc: 'assets/images/avatars/female-avatar-2.png'
     };
 
     const botEchoUser: User = {
       id: generateUUID(),
       name: 'Mr. Echo',
+      isClient: false,
       avatarSrc: 'assets/images/avatars/male-avatar-1.png'
     };
 
     const botReverseUser: User = {
       id: generateUUID(),
       name: 'Ms. Reverse',
+      isClient: false,
       avatarSrc: 'assets/images/avatars/female-avatar-4.png'
     };
 
     const botWaitUser: User = {
       id: generateUUID(),
       name: 'Mr. Waiting',
+      isClient: false,
       avatarSrc: 'assets/images/avatars/male-avatar-2.png'
     };
 
@@ -67,28 +72,28 @@ export class AppComponent {
     const thdCapitalize: Thread = {
       id: generateUUID(),
       name: 'Capitalize Thread',
-      avatarSrc: 'http://demo.visualdialog.org/static/images/bot.png',
+      avatarSrc: 'https://www.freeiconspng.com/uploads/robot-icon-17.png',
       messages: []
     };
 
     const thdEcho: Thread = {
       id: generateUUID(),
       name: 'Echo Thread',
-      avatarSrc: 'https://raw.githubusercontent.com/TelegramBots/Telegram.Bot.Extensions.Passport/master/package-icon.gif',
+      avatarSrc: 'https://www.freeiconspng.com/uploads/robot-icon-24.png',
       messages: []
     };
 
     const thdReverse: Thread = {
       id: generateUUID(),
       name: 'Reverse Thread',
-      avatarSrc: 'https://cdn0.iconfinder.com/data/icons/science-10/450/robot-512.png',
+      avatarSrc: 'https://www.freeiconspng.com/uploads/robot-icon-20.png',
       messages: []
     };
 
     const thdWait: Thread = {
       id: generateUUID(),
       name: 'Wait Thread',
-      avatarSrc: 'https://telegram.org/file/811140614/2/flKQKZ7xUOE.27938.gif/5574a04570218c9e11',
+      avatarSrc: 'https://www.freeiconspng.com/uploads/robot-icon-10.jpg',
       messages: []
     };
 
@@ -128,5 +133,78 @@ export class AppComponent {
       sentAt: moment().subtract(8, 'minutes').toDate(),
       text: 'I will wait for you.'
     }));
+
+    // bots replies (just a simple hacky way to keep track of replied messages)
+    const repliedMsgs: { [id: string]: boolean } = {};
+
+    this._store.subscribe(() => { 
+      // get all messages
+      const msgs: Message[] = getAllMessages(this._store.getState());
+
+      msgs.forEach((val: Message) => { 
+        // already replied?
+        if (repliedMsgs[val.id]) {
+          return;
+        }
+
+        // flag already replied
+        repliedMsgs[val.id] = true;
+
+        switch (val.thread.id) {
+          case thdCapitalize.id:
+            if (val.author.id !== botCapUser.id) {
+              // msg came from different user than thread user
+              this._store.dispatch(ThreadsActions.addMessage(val.thread, {
+                author: botCapUser,
+                sentAt: moment().toDate(),
+                text: val.text.toUpperCase()
+              }));
+            }
+
+            break;
+            
+          case thdEcho.id:
+            if (val.author.id !== botEchoUser.id) {
+              // msg came from different user than thread user
+              this._store.dispatch(ThreadsActions.addMessage(val.thread, {
+                author: botEchoUser,
+                sentAt: moment().toDate(),
+                text: val.text
+              }));
+            }
+
+            break;
+            
+          case thdReverse.id:
+            if (val.author.id !== botReverseUser.id) {
+              // msg came from different user than thread user
+              this._store.dispatch(ThreadsActions.addMessage(val.thread, {
+                author: botReverseUser,
+                sentAt: moment().toDate(),
+                text: val.text.split(' ').reverse().join(' ')
+              }));
+            }
+
+            break;
+            
+          case thdWait.id:
+            if (val.author.id !== botWaitUser.id) {
+              // tslint:disable-next-line:radix
+              const waitSec: number = Number.isNaN(parseInt(val.text)) ? 5 : parseInt(val.text);
+
+              // msg came from different user than thread user
+              setTimeout(() => { 
+                this._store.dispatch(ThreadsActions.addMessage(val.thread, {
+                  author: botWaitUser,
+                  sentAt: moment().toDate(),
+                  text: `${ val.text } (delayed ${ waitSec }secs)`
+                }));
+              }, waitSec * 1000);
+            }
+
+            break;
+        }
+      });
+    });
   }
 }
