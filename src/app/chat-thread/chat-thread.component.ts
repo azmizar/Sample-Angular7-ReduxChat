@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Thread } from '../models/thread.model';
 
 @Component({
@@ -9,11 +9,14 @@ import { Thread } from '../models/thread.model';
 export class ChatThreadComponent implements OnInit {
   @Input() thread: Thread;
   @Input() selectedThread: Thread;
+  @Output() selectThread: EventEmitter<Thread>;
 
   /**
    * Constructor
    */
-  constructor() { }
+  constructor() { 
+    this.selectThread = new EventEmitter();
+  }
 
   /**
    * Handles OnInit()
@@ -25,5 +28,13 @@ export class ChatThreadComponent implements OnInit {
    */
   isSelected(): boolean {
     return this.thread.id === this.selectedThread.id;
+  }
+
+  /**
+   * Handles SELECT button click
+   * @param event Event object
+   */
+  onSelectThreadClicked(event): void {
+    this.selectThread.emit(this.thread);
   }
 }

@@ -7,14 +7,18 @@ import { Component, OnInit, Inject } from '@angular/core';
  * 3rd party import
  */
 import * as Redux from 'redux';
+import * as moment from 'moment';
 
 /**
  * App imports
  */
 import { Thread } from '../models/thread.model';
+import { User } from '../models/user.model';
 import { AppState } from '../appstate/app.reducer';
 import { AppStore } from '../appstate/app.store';
 import { getCurrentThread } from '../appstate/threads.reducer';
+import { getCurrentUser } from '../appstate/users.reducer';
+import * as ThreadsActions from '../appstate/thread.actions';
 
 @Component({
   selector: 'chat-window',
@@ -23,6 +27,7 @@ import { getCurrentThread } from '../appstate/threads.reducer';
 })
 export class ChatWindowComponent implements OnInit {
   thread: Thread;
+  currentUser: User;
 
   /**
    * Constructor
@@ -44,6 +49,22 @@ export class ChatWindowComponent implements OnInit {
    * Update component based on state changes
    */
   updateState() {
-    this.thread = getCurrentThread(this._store.getState());
+    const appState = this._store.getState();
+
+    this.thread = getCurrentThread(appState);
+    this.currentUser = getCurrentUser(appState);
+  }
+
+  /**
+   * Sends message to chat thread
+   * @param msg Message to send
+   */
+  sendMessage(msg: string): void {
+    this._store.dispatch(ThreadsActions.addMessage(this.thread, {
+      author: this.currentUser,
+      sentAt: moment(),
+      isClient: true,
+      text: msg
+    }));
   }
 }

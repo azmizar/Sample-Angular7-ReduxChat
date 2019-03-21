@@ -7,4 +7,7 @@
     <span class="small">ID: {{ thread.id }}</span><br>
     <span class="small">Count: {{ thread.messages.length }}</span><br>
   </div>
+  <div *ngIf="!isSelected()" class="col-2">
+    <button class="btn btn-success col-12" (click)="onSelectThreadClicked($event)">Select</button>
+  </div>
 </div>

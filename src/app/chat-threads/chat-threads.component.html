@@ -4,7 +4,7 @@
   </div>
   <ul class="list-group list-group-flush">
     <li *ngFor="let thread of threads" class="list-group-item">
-      <chat-thread [thread]="thread" [selectedThread]="selectedThread"></chat-thread>
+      <chat-thread [thread]="thread" [selectedThread]="selectedThread" (selectThread)="onSelectThread($event)"></chat-thread>
     </li>
   </ul>
 </div>  

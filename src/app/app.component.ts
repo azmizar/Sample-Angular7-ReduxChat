@@ -36,7 +36,7 @@ export class AppComponent {
       id: generateUUID(),
       isClient: true, // <-- notice we're specifying the client as this User
       name: 'Azmizar',
-      avatarSrc: 'assets/images/avatars/female-avatar-1.png'
+      avatarSrc: 'assets/images/avatars/ch-logo.png'
     };
 
     const botCapUser: User = {
@@ -106,7 +106,7 @@ export class AppComponent {
 
     // add initial message
     this._store.dispatch(ThreadsActions.addMessage(thdCapitalize, {
-      author: interactiveUser,
+      author: botCapUser,
       sentAt: moment().subtract(45, 'minutes').toDate(),
       text: 'Start the morning with a smile.'
     }));

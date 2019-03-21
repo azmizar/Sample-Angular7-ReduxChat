@@ -15,6 +15,7 @@ import { AppStore } from '../appstate/app.store';
 import { AppState } from '../appstate/app.reducer';
 import { getAllThreads, getCurrentThread } from '../appstate/threads.reducer';
 import { Thread } from '../models/thread.model';
+import * as ThreadsAction from '../appstate/thread.actions';
 
 @Component({
   selector: 'chat-threads',
@@ -49,5 +50,13 @@ export class ChatThreadsComponent implements OnInit {
 
     this.threads = getAllThreads(appState);
     this.selectedThread = getCurrentThread(appState);
+  }
+
+  /**
+   * Select thread as current thread
+   * @param thd Thread to select as current
+   */
+  onSelectThread(thd: Thread): void {
+    this._store.dispatch(ThreadsAction.selectThread(thd));
   }
 }
