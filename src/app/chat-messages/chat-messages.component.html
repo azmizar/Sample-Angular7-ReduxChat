@@ -1,0 +1,7 @@
+<div class="bg-dark">
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let message of messages" class="list-group-item">
+      <chat-message [message]="message"></chat-message>
+    </li>
+  </ul> 
+</div>

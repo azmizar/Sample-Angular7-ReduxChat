@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Thread: {{ thread.name }}</h3>
+  </div>
+  <div class="card-body px-0 pt-0" style="height: calc(0.6 * 100vh); overflow-y: scroll;">
+    <chat-messages></chat-messages>
+  </div>
+  <div class="card-footer pb-0">
+    <form>
+      <div class="form-group form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="New message">
+        </div>
+        <div class="col-2">
+          <button type="button" class="btn btn-primary col">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

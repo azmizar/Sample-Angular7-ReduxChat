@@ -1,6 +1,9 @@
 {
-  "name": "learning-angular7-chatredux",
-  "version": "0.0.0",
+  "name": "sample-angular7-reduxchat",
+  "description": "Angular7 Chat App with Redux Sample",
+  "version": "1.0.0",
+  "author": "Azmizar Ujang",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -19,9 +22,14 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "redux": "^4.0.1",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
+    "uuid": "^3.3.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
