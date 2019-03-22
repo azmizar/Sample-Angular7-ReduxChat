@@ -43,14 +43,14 @@ describe('ThreadActions', () => {
 
     expect(action.type).toBe(ThreadActions.ADD_MESSAGE);
     expect(action.thread).toBe(TestData.thd1);
-    expect(action.message).toBe(TestData.msg1);
+    expect(action.message.id).toBe(TestData.msg1.id);
   });
 
   /**
    * selectThread() createing SelectThreadAction
    */
   it('should create SelectThreadAction object', () => {
-    const action = ThreadActions.addThread(TestData.thd1);
+    const action = ThreadActions.selectThread(TestData.thd1);
 
     expect(action.type).toBe(ThreadActions.SELECT_THREAD);
     expect(action.thread).toBe(TestData.thd1);
