@@ -80,6 +80,7 @@
         "chat"
       ],
       "kebab-case"
-    ]
+    ],
+    "variable-name": false
   }
 }
