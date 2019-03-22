@@ -2,7 +2,7 @@
  * Angular imports
  */
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 /**
@@ -34,7 +34,8 @@ import { appStoreProviders } from './appstate/app.store';
     HttpClientModule
   ],
   providers: [
-    appStoreProviders
+    appStoreProviders,
+    Title
   ],
   bootstrap: [AppComponent]
 })

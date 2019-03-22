@@ -2,6 +2,7 @@
  * Angular imports
  */
 import { Component, Inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 /**
  * 3rd party imports
@@ -12,6 +13,7 @@ import * as moment from 'moment';
 /**
  * App imports
  */
+import { environment } from '../environments/environment';
 import { User } from './models/user.model';
 import { Thread } from './models/thread.model';
 import { Message } from './models/message.model';
@@ -29,9 +31,16 @@ import { getAllMessages } from './appstate/threads.reducer';
 })
 export class AppComponent {
 
-  constructor(@Inject(AppStore) private _store: Redux.Store<AppState>) {
-    // inject dummy data
+  /**
+   * Constructor
+   * @param _store Redux store for AppState
+   * @param _titleSvc Title service
+   */
+  constructor(@Inject(AppStore) private _store: Redux.Store<AppState>, private _titleSvc: Title) {
+    // sets document title
+    this._titleSvc.setTitle(`Angular7 Sample: Chat App with Redux`);
 
+    // inject dummy data
     // users
     const interactiveUser: User = {
       id: generateUUID(),
@@ -206,5 +215,12 @@ export class AppComponent {
         }
       });
     });
+  }
+
+  /**
+   * Gets to document title
+   */
+  get title(): string {
+    return this._titleSvc.getTitle();
   }
 }
