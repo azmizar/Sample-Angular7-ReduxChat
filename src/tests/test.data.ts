@@ -57,7 +57,7 @@ const thd2: Thread = {
 const msg1: Message = {
   id: 'msg1',
   author: newUser,
-  isRead: false,
+  isRead: true,
   sentAt: moment().toDate(),
   text: 'Message 1',
   thread: thd1
