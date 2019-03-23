@@ -9,7 +9,7 @@ import { User } from 'src/app/models/user.model';
 const newUser: User = {
   id: 'mynewid',
   name: 'Azmizar Ujang',
-  avatarSrc: 'https://www.google.com',
+  avatarSrc: 'assets/images/avatars/male-avatar-1.png',
   isClient: true
 };
 
@@ -25,7 +25,7 @@ const nonIUser1: User = {
 const nonIUser2: User = {
   id: 'nonIUser2',
   name: 'User 2',
-  avatarSrc: 'https://www.google.com/2',
+  avatarSrc: 'assets/images/avatars/female-avatar-1.png',
   isClient: false
 };
 
