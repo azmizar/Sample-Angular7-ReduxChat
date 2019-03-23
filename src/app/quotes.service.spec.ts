@@ -22,7 +22,9 @@ describe('QuotesService', () => {
       imports: [
         HttpClientTestingModule
       ],
-      providers: []
+      providers: [
+        QuotesService
+      ]
     });
 
     // Http backend mock
@@ -34,28 +36,31 @@ describe('QuotesService', () => {
     httpTestingController.verify();
   });
 
-  // test instance creation
+  /**
+   * Test instance creation
+   */
   it('should be created', () => {
     const service: QuotesService = TestBed.get(QuotesService);
     expect(service).toBeTruthy();
   });
 
-  // test service returning a quote
+  /**
+   * Test retrieving a quote. Using done() since .getQuote() is a promise.
+   */
   it('should return "Quote 1"', (done) => { 
     // get service
     const service: QuotesService = TestBed.get(QuotesService);
 
     // get quote
     service.getQuote().then((val: string) => {
-      alert('Val: ' + val); 
       expect(val).toBe('Quote 1');
       done();
     }).catch((err) => { 
-      alert('test: ' + err);
       done();
     });
 
-    // mock HTTP call
+    // mock HTTP backend so that we can control data since each
+    // APIs return different format
     let data: any;
 
     const req = httpTestingController.match((request: HttpRequest<any>): boolean => { 
@@ -63,12 +68,15 @@ describe('QuotesService', () => {
 
       // setup expected data based on the URL
       if (request.url.match(/swanson/)) {
+        alert('API: Ron Swanson');
         validReq = true;
         data = ['Quote 1'];
       } else if (request.url.match(/corporatebs/)) {
+        alert('API: Corporate BS');
         validReq = true;
         data = { phrase: 'Quote 1' };
       } else if (request.url.match(/geek/)) {
+        alert('API: Jokes');
         validReq = true;
         data = 'Quote 1';
       } else {
