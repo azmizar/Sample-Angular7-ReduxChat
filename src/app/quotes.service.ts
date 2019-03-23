@@ -8,7 +8,15 @@ import { HttpClient } from '@angular/common/http';
  * 3rd party imports
  */
 import * as _ from 'lodash';
-import { resolve } from 'url';
+
+/**
+ * Provides enumered values for quotes sources
+ */
+export enum QuotesSources {
+  RonSwanson = 0,
+  CorporateBS = 1,
+  RandomJokes = 2
+}
 
 @Injectable({
   providedIn: 'root'
@@ -86,10 +94,11 @@ export class QuotesService {
   }
 
   /**
-   * Returns a random quote
+   * Returns a random quote from quotes sources
+   * @param src One of QuoteSources values. If omitted, it will be randomly selected
    */
-  async getQuote() {
-    const randInd: number = _.random(0, 2, false);
+  async getQuote(src?: QuotesSources) {
+    const randInd: number = typeof(src) !== 'undefined' ? src : _.random(0, 2, false);
 
     switch (randInd) {
       case 0:
