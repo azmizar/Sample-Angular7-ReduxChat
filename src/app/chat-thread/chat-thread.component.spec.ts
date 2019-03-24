@@ -33,9 +33,9 @@ describe('ChatThreadComponent', () => {
   });
 
   /**
-   * Instantiate and detect thread object changes
+   * Instantiate
    */
-  it('should create and it should detect thread object changes', () => {
+  it('should create', () => {
     let thd;
 
     // set to first thread
@@ -46,33 +46,6 @@ describe('ChatThreadComponent', () => {
     fixture.detectChanges();
 
     expect(component).toBeTruthy();
-
-    // get the DIV with col class which contains thread name
-    let elem = el.query(By.css('.col'));
-
-    expect(elem).toBeTruthy();
-    expect(elem.nativeElement.innerHTML).toMatch(thd.name);
-
-    // get the DIV with bg-info - should not exist
-    elem = el.query(By.css('.bg-info'));
-
-    expect(elem).toBeFalsy();
-
-    // get the IMG
-    elem = el.query(By.css('img'));
-
-    expect(elem).toBeTruthy();
-    expect(elem.nativeElement.src).toMatch(thd.avatarSrc);
-
-    // set selected thread to thd1
-    component.selectedThread = thd;
-    fixture.detectChanges();
-
-    // get the DIV with bg-info since this should be the selected thread
-    elem = el.query(By.css('.bg-info'));
-
-    expect(elem).toBeTruthy();
-    expect(elem.nativeElement.innerHTML).toMatch(thd.name);
   });
 
   /**
