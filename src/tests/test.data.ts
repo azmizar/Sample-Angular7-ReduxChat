@@ -17,7 +17,7 @@ const newUser: User = {
 const nonIUser1: User = {
   id: 'nonIUser1',
   name: 'User 1',
-  avatarSrc: 'https://www.google.com/1',
+  avatarSrc: 'assets/images/avatars/female-avatar-2.png',
   isClient: false
 };
 
@@ -33,7 +33,7 @@ const nonIUser2: User = {
 const nonIUser3: User = {
   id: 'nonIUser3',
   name: 'User 3',
-  avatarSrc: 'https://www.google.com/3',
+  avatarSrc: 'assets/images/avatars/male-avatar-2.png',
   isClient: false
 };
 
@@ -41,7 +41,7 @@ const nonIUser3: User = {
 const thd1: Thread = {
   id: 'thd1',
   name: 'Thread 1',
-  avatarSrc: 'https://www.microsoft.com/1',
+  avatarSrc: 'https://www.freeiconspng.com/uploads/robot-icon-17.png',
   messages: []
 };
 
@@ -49,7 +49,7 @@ const thd1: Thread = {
 const thd2: Thread = {
   id: 'thd2',
   name: 'Thread 2',
-  avatarSrc: 'https://www.microsoft.com/2',
+  avatarSrc: 'https://www.freeiconspng.com/uploads/robot-icon-24.png',
   messages: []
 };
 
