@@ -2,7 +2,7 @@
  * Angular imports
  */
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 /**
@@ -152,4 +152,35 @@ describe('ChatThreadComponent', () => {
     expect(elem).toBeTruthy();
     expect(elem.nativeElement.src).toMatch(thd.avatarSrc);
   });
+
+  /**
+   * Triggers selectThread event w/ the Thread object as argument
+   */
+  it('should trigger selectThread event when select thread button is clicked on', fakeAsync(() => { 
+    let thd;
+
+    // set to first thread
+    thd = TestData.thd1;
+
+    component.thread = thd;
+    component.selectedThread = TestData.thd2;
+    fixture.detectChanges();
+
+    // trap the select thread event
+    component.selectThread.subscribe((selectThd) => { 
+      // argument should be the thread for the component
+      expect(selectThd).toEqual(thd);
+    });
+
+    // get button
+    const btn = el.query(By.css('button'));
+
+    expect(btn).toBeTruthy();
+
+    // trigger click
+    btn.triggerEventHandler('click', null);
+
+    // advance async
+    tick();
+  }));
 });
