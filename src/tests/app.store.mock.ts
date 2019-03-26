@@ -7,81 +7,72 @@ import * as Redux from 'redux';
  * App imports
  */
 import { AppState } from 'src/app/appstate/app.reducer';
-import { fullAppState, emptyAppState } from './test.data';
+import { emptyAppState } from './test.data';
 
 /**
  * Mock app store (note that mock only support 1 callback)
  */
-export class MockAppStore implements Redux.Store<AppState> {
+export class MockAppStore {
   private _state: AppState;
-  private _cb: () => void;
+  private _cb: Array<() => void>;
 
+  /**
+   * Constructor
+   */
   constructor() {
-    this._state = emptyAppState;  
-    this._cb = null;
+    this._state = emptyAppState;
+    this._cb = [];
   }
 
   /**
-   * Assigns fake state to the store
-   * @param state AppState to set it to
+   * Assigns state to mock
+   * @param state AppState object
    */
-  setFakeState(state: AppState): void {
+  setFakeState(state: AppState) {
     this._state = state;
 
-    // this is mock - we will trigger subscriber event since this is a shortcut to change
-    // the internal state
-    if (this._cb) {
-      this._cb();
-    }
+    // mock trigger action since this is changing internal state
+    this.dispatch({ type: 'UPDATE_STATE', newState: state });
   }
 
-  /** 
-   * Get current app state
+  /**
+   * Returns current state
    */
-  getState(): AppState { 
+  getState(): AppState {
     return this._state;
   }
 
   /**
-   * Assign subscriner
-   * @param cb Listener callback/subscriber
+   * Replace next reducer (not implemented)
    */
-  subscribe(cb: () => void): Redux.Unsubscribe { 
-    this._cb = cb;
+  replaceReducer(): void { }
 
+  /**
+   * Subscribe to AppState changes
+   * @param cb Callback when changes to AppState occurs
+   */
+  subscribe(cb: () => void): () => void {
+    this._cb.push(cb);
+    
     return () => { 
-      this._cb = null;
+      // unsubscribe
+      this._cb = this._cb.filter((cbFn) => { 
+        return !(cb === cbFn);
+      });
     };
   }
 
   /**
-   * Replace reducer (not implemented)
-   * @param r reducer function
+   * Dispatches action (does not actually modify the state in the store - use setFakeState() to do so)
+   * @param action Dispatch action
    */
-  replaceReducer(r: Redux.Reducer): void { }
-
-  /**
-   * Internal dispatch function
-   * @param action Action to dispatch
-   */
-  private _disp<T extends Redux.Action>(action: T): T { 
-    // this is mock - so we don't do any action but we will trigger subscriber event
+  dispatch(action: any) {
     if (this._cb) {
-      this._cb();
+      this._cb.forEach((cbFn) => { 
+        cbFn();
+      });
     }
 
     return action;
   }
-
-  /**
-   * Gets dispatcher
-   */
-  get dispatch(): Redux.Dispatch {
-    return this._disp;
-  }
-
-  /**
-   * Sets dispatcher (not implemented)
-   */
-  set dispatch(action: Redux.Dispatch<Redux.AnyAction>) { }
 }
