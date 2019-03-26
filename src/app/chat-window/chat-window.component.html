@@ -1,4 +1,9 @@
-<div class="card">
+<div class="card thread-not-set" *ngIf="thread === null">
+  <div class="card-header">
+    <h3>Thread: None Selected</h3>
+  </div>
+</div>
+<div class="card thread-is-set" *ngIf="thread !== null">
   <div class="card-header">
     <h3>Thread: {{ thread.name }}</h3>
   </div>
