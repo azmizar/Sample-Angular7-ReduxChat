@@ -113,4 +113,16 @@ fullAppState.threads.ids = [thd1.id, thd2.id];
 fullAppState.threads.entities[thd1.id] = thd1;
 fullAppState.threads.entities[thd2.id] = thd2;
 
-export { newUser, nonIUser1, nonIUser2, nonIUser3, thd1, thd2, msg1, msg2, msg3, msg4, fullAppState };
+// default empty state
+const emptyAppState: AppState = {
+  threads: {
+    ids: [],
+    entities: {},
+    currentThreadId: null
+  },
+  users: {
+    currentUser: newUser
+  }
+};
+
+export { newUser, nonIUser1, nonIUser2, nonIUser3, thd1, thd2, msg1, msg2, msg3, msg4, emptyAppState, fullAppState };
