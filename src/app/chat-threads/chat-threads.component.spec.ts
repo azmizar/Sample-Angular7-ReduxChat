@@ -6,6 +6,11 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { By } from '@angular/platform-browser';
 
 /**
+ * 3rd party imports
+ */
+import * as moment from 'moment';
+
+/**
  * App imports
  */
 import { ChatThreadsComponent } from './chat-threads.component';
@@ -20,6 +25,7 @@ import { SELECT_THREAD } from '../appstate/thread.actions';
 describe('ChatThreadsComponent', () => {
   let component: ChatThreadsComponent;
   let fixture: ComponentFixture<ChatThreadsComponent>;
+  let origJasmineTimeout: number;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,12 +42,19 @@ describe('ChatThreadsComponent', () => {
   }));
 
   beforeEach(() => {
+    // increase timeout to 15secs since one of the test has to wait for 10secs
+    origJasmineTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15 * 1000;
+
     fixture = TestBed.createComponent(ChatThreadsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  afterEach(() => { });
+  afterEach(() => { 
+    // resets jasmine default timeout
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = origJasmineTimeout;
+  });
 
   /**
    * Instantiate
@@ -124,40 +137,9 @@ describe('ChatThreadsComponent', () => {
     expect(component.enableRandomMessage).toEqual(false);
   });
 
-  xit('should trigger sendRandomMessage when Random Message checkbox is checked', fakeAsync(() => {
-    // appsstore
-    const appStore: any = fixture.debugElement.injector.get(AppStore);
-
-    // set dummy state
-    appStore.setFakeState(TestData.fullAppState);
-
-    fixture.detectChanges();
-
-    // spy on dispatch()
-    const dispatchSpy = spyOn(appStore, 'dispatch');
-
-    // get checkbox
-    const el: DebugElement = fixture.debugElement.query(By.css('#customCheck1'));
-
-    expect(el).toBeTruthy();
-
-    // check checkbox
-    el.nativeElement.checked = true;
-    el.triggerEventHandler('click', null);
-
-    // advance by 10secs
-    // tick(11000);
-    jasmine.clock().tick(11000);
-
-    // // disable checkbox
-    // el.nativeElement.checked = false;
-    // el.triggerEventHandler('click', null);
-
-    // fixture.detectChanges();
-
-    expect(dispatchSpy).toHaveBeenCalledTimes(1);
-  }));
-
+  /**
+   * Trigger sendRandomMessage when Random Message checkbox is checked
+   */
   it('should trigger sendRandomMessage when Random Message checkbox is checked', (done) => {
     // appsstore
     const appStore: any = fixture.debugElement.injector.get(AppStore);
@@ -168,7 +150,8 @@ describe('ChatThreadsComponent', () => {
     fixture.detectChanges();
 
     // spy on dispatch()
-    const dispatchSpy = spyOn(appStore, 'dispatch');
+    const dispatchSpy = spyOn(appStore, 'dispatch').and.callThrough();
+    const sendRandomMessageSpy = spyOn(component, 'sendRandomMessage').and.callThrough();
 
     // get checkbox
     const el: DebugElement = fixture.debugElement.query(By.css('#customCheck1'));
@@ -179,16 +162,51 @@ describe('ChatThreadsComponent', () => {
     el.nativeElement.checked = true;
     el.triggerEventHandler('click', null);
 
-
-    // // disable checkbox
-    // el.nativeElement.checked = false;
-    // el.triggerEventHandler('click', null);
-
-    // fixture.detectChanges();
-
-    setTimeout(() => { 
+    setTimeout(() => {
+      alert('case1(): ' + moment().toDate());
+      expect(sendRandomMessageSpy).toHaveBeenCalledTimes(1);
       expect(dispatchSpy).toHaveBeenCalledTimes(1);
+
+      // disable checkbox
+      el.nativeElement.checked = false;
+      el.triggerEventHandler('click', null);
+
       done();
-    }, 5000);
+    }, 11000);
+  });
+
+  /**
+   * sendRandomMessage should not call dispatch() if Random Message checkbox is NOT checked
+   */
+  it('should not dispatch random message if Random Message checkbox is NOT checked', (done) => {
+    // appsstore
+    const appStore: any = fixture.debugElement.injector.get(AppStore);
+
+    // set dummy state
+    appStore.setFakeState(TestData.fullAppState);
+
+    fixture.detectChanges();
+
+    // spy on dispatch()
+    const dispatchSpy = spyOn(appStore, 'dispatch').and.callThrough();
+    const sendRandomMessageSpy = spyOn(component, 'sendRandomMessage').and.callThrough();
+
+    // get checkbox
+    const el: DebugElement = fixture.debugElement.query(By.css('#customCheck1'));
+
+    expect(el).toBeTruthy();
+
+    // check checkbox
+    el.nativeElement.checked = false;
+    el.triggerEventHandler('click', null);
+
+    setTimeout(() => {
+      alert('case2(): ' + moment().toDate());
+
+      expect(sendRandomMessageSpy).toHaveBeenCalledTimes(1);
+      expect(dispatchSpy).toHaveBeenCalledTimes(0);
+
+      done();
+    }, 11000);
   });
 });
