@@ -48,7 +48,9 @@ export class ChatThreadsComponent implements OnInit {
    */
   ngOnInit() { 
     // trigger auto-message submission every 10 secs
-    setInterval(this.sendRandomMessage.bind(this), 10000);
+    setInterval(() => { 
+      this.sendRandomMessage();
+    }, 10000);
   }
 
   /**
@@ -82,7 +84,7 @@ export class ChatThreadsComponent implements OnInit {
    */
   async sendRandomMessage() {
     if (!this.enableRandomMessage) {
-      return;
+      return null;
     }
 
     // get all threads
@@ -104,5 +106,7 @@ export class ChatThreadsComponent implements OnInit {
       sentAt: moment().toDate(),
       text: quote
     }));
+
+    return quote;
   }
 }
