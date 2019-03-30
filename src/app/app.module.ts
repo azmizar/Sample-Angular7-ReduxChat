@@ -8,7 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 /**
  * App imports
  */
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ChatThreadsComponent } from './chat-threads/chat-threads.component';
@@ -30,7 +29,6 @@ import { appStoreProviders } from './appstate/app.store';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule
   ],
   providers: [
