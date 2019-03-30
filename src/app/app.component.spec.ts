@@ -77,4 +77,22 @@ describe('AppComponent', () => {
 
     expect(el).toBeTruthy();
   });
+
+  /**
+   * Display chat-threads
+   */
+  it('should render chat-threads', () => {
+    const el: DebugElement = fixture.debugElement.query(By.directive(ChatThreadsComponent));
+
+    expect(el).toBeTruthy();
+  });
+
+  /**
+   * Display chat-window
+   */
+  it('should render chat-window', () => {
+    const el: DebugElement = fixture.debugElement.query(By.directive(ChatWindowComponent));
+
+    expect(el).toBeTruthy();
+  });
 });
