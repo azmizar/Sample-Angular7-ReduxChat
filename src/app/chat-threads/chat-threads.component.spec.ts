@@ -162,8 +162,10 @@ describe('ChatThreadsComponent', () => {
     el.nativeElement.checked = true;
     el.triggerEventHandler('click', null);
 
+    // sendRandomMessage is called setup by using setInterval(fn, 10000) in ngOnInit()
+    // so we just have to wait for 10 secs and check if sendRandomMessage() and dispatch()
+    // has been called
     setTimeout(() => {
-      alert('case1(): ' + moment().toDate());
       expect(sendRandomMessageSpy).toHaveBeenCalledTimes(1);
       expect(dispatchSpy).toHaveBeenCalledTimes(1);
 
@@ -172,7 +174,7 @@ describe('ChatThreadsComponent', () => {
       el.triggerEventHandler('click', null);
 
       done();
-    }, 11000);
+    }, 10000);
   });
 
   /**
@@ -200,13 +202,14 @@ describe('ChatThreadsComponent', () => {
     el.nativeElement.checked = false;
     el.triggerEventHandler('click', null);
 
+    // sendRandomMessage is called setup by using setInterval(fn, 10000) in ngOnInit()
+    // so we just have to wait for 10 secs and check if sendRandomMessage() has been called
+    // but dispatch() should not have been called
     setTimeout(() => {
-      alert('case2(): ' + moment().toDate());
-
       expect(sendRandomMessageSpy).toHaveBeenCalledTimes(1);
       expect(dispatchSpy).toHaveBeenCalledTimes(0);
 
       done();
-    }, 11000);
+    }, 10000);
   });
 });
