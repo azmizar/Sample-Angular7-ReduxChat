@@ -1,10 +1,11 @@
 /**
  * Angular imports
  */
-import { TestBed, async } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { BrowserModule, By, Title } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { BrowserModule, Title } from '@angular/platform-browser';
 
 /**
  * App imports
@@ -22,6 +23,9 @@ import { appStoreProviders } from './appstate/app.store';
  * Unit tests for AppComponent
  */
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -45,35 +49,32 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
   /**
    * Test component creation
    */
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   /**
    * Test document title (this is set within AppComponent constructor)
    */
   it(`should have as title 'Angular7 Sample: Chat App with Redux'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Angular7 Sample: Chat App with Redux');
+    expect(component.title).toEqual('Angular7 Sample: Chat App with Redux');
   });
 
   /**
-   * Test title in the header (should be the same as what is set in the app)
+   * Display app-header
    */
-  it('should render title in the header', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+  it('should render app-header', () => { 
+    const el: DebugElement = fixture.debugElement.query(By.directive(HeaderComponent));
 
-    fixture.detectChanges();
-
-    const compiled = fixture.debugElement.nativeElement;
-
-    expect(compiled.querySelector('#hdrTitle').textContent).toContain(app.title);
+    expect(el).toBeTruthy();
   });
 });
